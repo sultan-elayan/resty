@@ -1,12 +1,12 @@
-import React from "react";
-import { useState } from "react";
+import React ,  { useState }from "react";
 import "./form.scss";
+
 
 function Form(props) {
   let [showPostTextArea, setShowPostTextArea] = useState(false);
   let [method, setMethod] = useState("get");
-  let [url, setUrl] = useState("");
-  let [requestBody, setRequestBody] = useState("https://pokeapi.co/api/v2/pokemon");
+  let [url, setUrl] = useState("https://pokeapi.co/api/v2/pokemon");
+  let [requestBody, setRequestBody] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -37,11 +37,13 @@ function Form(props) {
 
   function deleteHandler(e) {
     setMethod(e.target.id);
+    
   }
   // =====================================
 
-  function urlHandler(e) {
-    setUrl(e.target.value);
+  let  urlHandler = async (e)=>  {
+   setUrl(e.target.value)
+    
   }
   // =====================================
 
