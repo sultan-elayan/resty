@@ -6,7 +6,7 @@
  
  [lab-27](https://vubng.csb.app/)
 
- [lab-28]()
+ [lab-28](https://b414u.csb.app/)
 
 ## UML 
 
