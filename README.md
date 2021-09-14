@@ -6,6 +6,8 @@
  
  [lab-27](https://vubng.csb.app/)
 
+ [lab-28]()
+
 ## UML 
 
 ![](lab-27.jpg)

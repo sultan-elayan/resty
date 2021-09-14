@@ -1,45 +1,68 @@
-import React from 'react';
-import './app.scss';
-import Header from './components/header';
-import Footer from './components/footer';
-import Form from './components/form';
-import Results from './components/results';
+"use strict";
+import React, { useState, useEffect } from "react";
+import "./app.scss";
+import axios from "axios";
+import Header from "./components/header";
+import Footer from "./components/footer";
+import Form from "./components/form";
+import Results from "./components/results";
 
+function App() {
+  const [state, setState] = useState({ data: "", requestParams: {} });
+  const [history, setHistory] = useState([]);
 
-class App extends React.Component {
+  async function callApi(requestParams) {
+    setState({ requestParams });
+    setHistory([...history, requestParams.url, requestParams.method]);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: null,
-      requestParams: {},
+    try {
+      const dataUrl = await axios.get(requestParams.url);
+
+      const data = {
+        headers: [dataUrl.headers],
+        results: [dataUrl.data.results],
+      };
+      setState({ data });
+    } catch (e) {
+      throw "error";
+    }
+  }
+  useEffect(() => {
+    console.log("RUN ON EVERY RE-RENDER");
+  });
+
+  useEffect(() => {
+    console.log("I RUN ON HISTORY CHANGE: ${history}");
+  }, [history]);
+
+  useEffect(() => {
+    console.log("I RUN ON STATE, HISTORY CHANGE: ", state);
+  }, [state, history]);
+
+  useEffect(() => {
+    console.log("Initial loading ", state);
+  }, []);
+
+  //UNMOUNT
+  useEffect(() => {
+    return () => {
+      console.log(" Component unmounted !!");
     };
-  }
+  });
 
-  callApi = (requestParams) => {
-    // mock output
-    const data = {
-      count: 2,
-      results: [
-        {name: 'fake thing 1', url: 'http://fakethings.com/1'},
-        {name: 'fake thing 2', url: 'http://fakethings.com/2'},
-      ],
-    };
-    this.setState({data, requestParams});
-  }
+  return (
+    <React.Fragment>
+      <Header />
 
-  render() {
-    return (
-      <React.Fragment>
-        <Header />
-        <div>Request Method: {this.state.requestParams.method}</div>
-        <div>URL: {this.state.requestParams.url}</div>
-        <Form handleApiCall={this.callApi} />
-        <Results data={this.state.data} />
-        <Footer />
-      </React.Fragment>
-    );
-  }
+      {history.map((item, idx) => {
+        return <div key={idx}>{item}</div>;
+      })}
+      <Form handleApiCall={callApi} />
+      <Results data={state.data} />
+
+      <Footer />
+    </React.Fragment>
+  );
 }
 
 export default App;
