@@ -6,8 +6,14 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import Form from "./components/form";
 import Results from "./components/results";
+import History from "./components/history";
 
 function App() {
+
+  const initialState = {
+    people: [], 
+    count: 0
+}
   const [state, setState] = useState({ data: "", requestParams: {} });
   const [history, setHistory] = useState([]);
 
@@ -50,10 +56,18 @@ function App() {
     };
   });
 
+
+  // =====================
+
+  
+
+
+ 
+
   return (
     <React.Fragment>
       <Header />
-
+      
       {history.map((item, idx) => {
         return <div key={idx}>{item}</div>;
       })}
@@ -65,4 +79,6 @@ function App() {
   );
 }
 
-export default App;
+export default App ;
+
+

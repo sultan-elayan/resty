@@ -8,7 +8,13 @@
 
  [lab-28](https://b414u.csb.app/)
 
+ [lab-29]()
+
 ## UML 
 
+### useState
 ![](lab-27.jpg)
+
+### useReducer
+![](lab-29.jpeg)
 
