@@ -4,7 +4,7 @@ import "./app.scss";
 import axios from "axios";
 import Header from "./components/header";
 import Footer from "./components/footer";
-import Form from "./components/form";
+import Form1 from "./components/form";
 import Results from "./components/results";
 import History from "./components/history";
 
@@ -71,7 +71,7 @@ function App() {
       {history.map((item, idx) => {
         return <div key={idx}>{item}</div>;
       })}
-      <Form handleApiCall={callApi} />
+      <Form1 handleApiCall={callApi} />
       <Results data={state.data} />
 
       <Footer />

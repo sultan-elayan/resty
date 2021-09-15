@@ -1,26 +1,20 @@
 import React, { useState } from "react";
 import { useReducer } from "react";
 import "./form.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Button, Row, Col, Form } from "react-bootstrap";
 
-function Form(props) {
+function Form1(props) {
   let [showPostTextArea, setShowPostTextArea] = useState(false);
   let [method, setMethod] = useState("get");
   let [url, setUrl] = useState("https://pokeapi.co/api/v2/pokemon");
   let [requestBody, setRequestBody] = useState("");
+  const initialState = { api: [] };
+  const [state, dispatch] = useReducer(apiReducer, initialState);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const formData = {
-      method: method,
-      url: url,
-    };
-    props.handleApiCall(formData, requestBody);
-    e.target.reset();
-  }
-  // =====================================
   function getHandler(e) {
     setMethod(e.target.id);
-    console.log("method1111111111111111111111", e.target.id);
+    console.log("method------------------>", e.target.id);
   }
   // =====================================
 
@@ -50,11 +44,6 @@ function Form(props) {
     setRequestBody(e.target.value);
   }
   // =====================================
-  // =====================================
-  const initialState = {
-    api: [],
-  };
-  const [state, dispatch] = useReducer(apiReducer, initialState);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -64,7 +53,6 @@ function Form(props) {
       method: method,
       name: name,
     };
-
     console.log("method===============================", method);
     dispatch(addAction(data));
     e.target.reset();
@@ -121,15 +109,49 @@ function Form(props) {
           );
         })}
       </ul>
+
+      {/* =========== */}
+
+      <Form onSubmit={handleSubmit}>
+        <Row className="mb-3">
+          <Form.Group as={Col} controlId="formGridEmail">
+            <Form.Label>URL : </Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter API URL"
+              name="api"
+              type="text"
+              onChange={urlHandler}
+              required
+            />
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3"></Row>
+
+        <Button variant="primary" type="submit" data-testid="submit">
+          GO !
+        </Button>
+
+        <Button
+          variant="primary"
+          onClick={() => dispatch(emptyAction())}
+          style={{ marginLeft: "40px" }}
+        >
+          Clear All !
+        </Button>
+      </Form>
+      {/* =========== */}
       <form onSubmit={handleSubmit}>
-        <label>
+        {/* <label>
           <span>URL: </span>
           <input name="api" type="text" onChange={urlHandler} required />
           <button type="submit" data-testid="submit">
             GO!
           </button>
           <button onClick={() => dispatch(emptyAction())}>Clear All</button>
-        </label>
+        </label> */}
+        <Form.Label>Pick Method : </Form.Label>
         <label className="methods">
           <button className="butt" type="button" id="get" onClick={getHandler}>
             {" "}
@@ -174,4 +196,4 @@ function Form(props) {
   );
 }
 
-export default Form;
+export default Form1;
