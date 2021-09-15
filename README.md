@@ -8,7 +8,7 @@
 
  [lab-28](https://b414u.csb.app/)
 
- [lab-29]()
+ [lab-29](https://qx03y.csb.app/)
 
 ## UML 
 
