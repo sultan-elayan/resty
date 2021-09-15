@@ -1,6 +1,6 @@
-import React ,  { useState }from "react";
+import React, { useState } from "react";
+import { useReducer } from "react";
 import "./form.scss";
-
 
 function Form(props) {
   let [showPostTextArea, setShowPostTextArea] = useState(false);
@@ -20,6 +20,7 @@ function Form(props) {
   // =====================================
   function getHandler(e) {
     setMethod(e.target.id);
+    console.log("method1111111111111111111111", e.target.id);
   }
   // =====================================
 
@@ -37,34 +38,102 @@ function Form(props) {
 
   function deleteHandler(e) {
     setMethod(e.target.id);
-    
   }
   // =====================================
 
-  let  urlHandler = async (e)=>  {
-   setUrl(e.target.value)
-    
-  }
+  let urlHandler = async (e) => {
+    setUrl(e.target.value);
+  };
   // =====================================
 
   function handleRequestBody(e) {
     setRequestBody(e.target.value);
   }
   // =====================================
+  // =====================================
+  const initialState = {
+    api: [],
+  };
+  const [state, dispatch] = useReducer(apiReducer, initialState);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log("e.target >>> ", e.target);
+    const name = e.target.api.value;
+    const data = {
+      method: method,
+      name: name,
+    };
+
+    console.log("method===============================", method);
+    dispatch(addAction(data));
+    e.target.reset();
+  }
+
+  function apiReducer(state = initialState, action) {
+    const { type, payload } = action;
+    switch (type) {
+      case "ADD_API":
+        const api = [...state.api, payload.method, payload.name];
+        // return the new state
+        return { api };
+      case "REMOVE_API":
+        const peopleWithoutPerson = state.api.filter((api) => api !== payload);
+        return { api: peopleWithoutPerson };
+      // return the new state
+      case "EMPTY_API":
+        return initialState;
+      default:
+        return state;
+    }
+  }
+
+  let addAction = (name) => {
+    return {
+      type: "ADD_API",
+      payload: name,
+    };
+  };
+
+  let removeAction = (name) => {
+    return {
+      type: "REMOVE_API",
+      payload: name,
+    };
+  };
+
+  let emptyAction = () => {
+    return {
+      type: "EMPTY_API",
+    };
+  };
 
   return (
     <>
+      <h1>History</h1>
+
+      <ul>
+        {state.api.map((api, indx) => {
+          return (
+            <li key={indx} onClick={() => dispatch(removeAction(api))}>
+              {api}
+            </li>
+          );
+        })}
+      </ul>
       <form onSubmit={handleSubmit}>
         <label>
           <span>URL: </span>
-          <input name="url" type="text" onChange={urlHandler} />
-          <button type="submit"  data-testid="submit">
+          <input name="api" type="text" onChange={urlHandler} required />
+          <button type="submit" data-testid="submit">
             GO!
           </button>
+          <button onClick={() => dispatch(emptyAction())}>Clear All</button>
         </label>
         <label className="methods">
           <button className="butt" type="button" id="get" onClick={getHandler}>
-            GET
+            {" "}
+            GET{" "}
           </button>
           <button
             className="butt"
@@ -72,6 +141,7 @@ function Form(props) {
             id="post"
             onClick={postHandler}
           >
+            {" "}
             POST
           </button>
           <button
@@ -80,7 +150,7 @@ function Form(props) {
             id="put"
             onClick={updateHandler}
           >
-            PUT
+            PUT{" "}
           </button>
           <button
             className="butt"
